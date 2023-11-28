@@ -1,3 +1,4 @@
+from io import BytesIO
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
@@ -39,6 +40,9 @@ try:
     current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     file_name = f'report_{current_datetime}.xlsx'
 
+    # Создаем временный буфер в памяти
+    buffer = BytesIO()
+
     workbook = Workbook()
     sheet = workbook.active
 
@@ -50,8 +54,11 @@ try:
     for row in cursor:
         sheet.append(list(row.values()))
 
-#    workbook.save(file_name)
-    print(f'Название xlsx файла : {file_name}')
+    # Сохраняем отчет в буфер вместо файла
+    workbook.save(buffer)
+
+    # Переводим курсор на начало буфера
+    buffer.seek(0)
 
     # Код отправки почты через Gmail
     email_host = 'smtp.gmail.com'
@@ -71,9 +78,9 @@ try:
     message['Subject'] = subject
     message.attach(MIMEText(body, 'plain'))
 
-    attachment = open(file_name, 'rb')
+    # Вместо открытия файла используем буфер
     part = MIMEBase('application', 'octet-stream')
-    part.set_payload((attachment).read())
+    part.set_payload(buffer.read())
     encoders.encode_base64(part)
     part.add_header('Content-Disposition', f'attachment; filename= {file_name}')
     message.attach(part)
