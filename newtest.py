@@ -9,10 +9,10 @@ from openpyxl import Workbook
 from datetime import datetime
 
 db_config = {
-    'host': '185.146.1.107',
-    'user': 'admin',
-    'password': 'thPZJhRIyMoY23P5ayj7K1k=',
-    'database': 'energy_db',
+    'host': '***',
+    'user': '***',
+    'password': '***',
+    'database': '***',
 }
 
 try:
@@ -83,7 +83,7 @@ try:
     email_host = 'smtp.gmail.com'
     email_port = 587
     email_username = 'bekzatablaev@gmail.com'
-    email_password = 'osgk uuod zhin bvku'
+    email_password = '***'
 
     from_email = 'bekzatablaev@gmail.com'
     to_email = 'bekzat.ablaev99@mail.ru'
